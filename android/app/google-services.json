@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142619233162",
+    "project_id": "f1rst-b7a19",
+    "storage_bucket": "f1rst-b7a19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142619233162:android:67c928a97d1f8b1d43d673",
+        "android_client_info": {
+          "package_name": "com.example.f1rst"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5oFH5vyFQEeelf_5Eq3RDqUrZ2ZUltnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,119 @@
+import 'package:equatable/equatable.dart';
+import 'package:f1rst/models/user_model.dart';
+
+class RegInfoState extends Equatable {
+  final String email;
+  final String phoneNumber;
+  final String password;
+  final String aboutUser;
+  final bool isEmailError;
+  final bool isPhoneNumberError;
+  final bool isPasswordError;
+  final String emailMessage;
+  final String phoneNumberMessage;
+  final String passwordMessage;
+  final bool isLoading;
+  final String userEmail;
+  final String userAbout;
+  final String userImage;
+  final UserModel user;
+
+  const RegInfoState({
+    required this.isLoading,
+    required this.userAbout,
+    required this.userEmail,
+    required this.email,
+    required this.phoneNumber,
+    required this.password,
+    required this.aboutUser,
+    required this.isEmailError,
+    required this.isPhoneNumberError,
+    required this.isPasswordError,
+    required this.emailMessage,
+    required this.phoneNumberMessage,
+    required this.passwordMessage,
+    required this.userImage,
+    required this.user,
+  });
+
+  RegInfoState copyWith({
+    String? email,
+    String? phoneNumber,
+    String? password,
+    String? aboutUser,
+    bool? isEmailError,
+    bool? isPhoneNumberError,
+    bool? isPasswordError,
+    bool? isLoading,
+    String? emailMessage,
+    String? phoneNumberMessage,
+    String? passwordMessage,
+    String? userEmail,
+    String? userAbout,
+    String? userImage,
+    UserModel? user,
+  }) {
+    return RegInfoState(
+      isLoading: isLoading ?? this.isLoading,
+      email: email ?? this.email,
+      userEmail: userEmail ?? this.userEmail,
+      userAbout: userAbout ?? this.userAbout,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      password: password ?? this.password,
+      aboutUser: aboutUser ?? this.aboutUser,
+      isEmailError: isEmailError ?? this.isEmailError,
+      isPhoneNumberError: isPhoneNumberError ?? this.isPhoneNumberError,
+      isPasswordError: isPasswordError ?? this.isPasswordError,
+      emailMessage: emailMessage ?? this.emailMessage,
+      phoneNumberMessage: phoneNumberMessage ?? this.phoneNumberMessage,
+      passwordMessage: passwordMessage ?? this.passwordMessage,
+      userImage: userImage ?? this.userImage,
+      user: user ?? this.user,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        email,
+        phoneNumber,
+        password,
+        aboutUser,
+        isLoading,
+        isEmailError,
+        isPhoneNumberError,
+        isPasswordError,
+        emailMessage,
+        phoneNumberMessage,
+        passwordMessage,
+        userEmail,
+        userAbout,
+        userImage,
+        user,
+      ];
+
+  factory RegInfoState.initial() {
+    return RegInfoState(
+      email: "",
+      phoneNumber: "",
+      password: "",
+      isLoading: false,
+      aboutUser: "",
+      isEmailError: false,
+      isPhoneNumberError: false,
+      isPasswordError: false,
+      emailMessage: '',
+      phoneNumberMessage: '',
+      passwordMessage: '',
+      userAbout: '',
+      userEmail: '',
+      userImage: "assets/imagesdefphoto.jpg",
+      user: UserModel(
+        aboutUser: '',
+        uid: '',
+        phoneNumber: '',
+        email: '',
+        userImage: '',
+      ),
+    );
+  }
+}
