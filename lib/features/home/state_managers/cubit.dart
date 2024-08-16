@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, prefer_const_constructors
+
 import 'package:f1rst/features/home/state_managers/state.dart';
 import 'package:f1rst/views/splash_screen.dart';
 import 'package:flutter/material.dart';

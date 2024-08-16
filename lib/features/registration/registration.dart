@@ -4,11 +4,8 @@ import 'dart:io';
 import 'package:f1rst/features/registration/components/reg_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:f1rst/features/registration/state_managers/cubit.dart';
 import 'package:f1rst/features/registration/state_managers/state.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class RegBuilder extends StatelessWidget {
   const RegBuilder({super.key});

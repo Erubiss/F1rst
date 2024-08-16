@@ -1,7 +1,7 @@
-import 'package:f1rst/features/home/home_page.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:f1rst/features/log_in/log_in.dart';
 import 'package:f1rst/features/registration/registration.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {

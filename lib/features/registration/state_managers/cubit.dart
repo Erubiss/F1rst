@@ -1,7 +1,6 @@
-import 'dart:io';
+// ignore_for_file: avoid_print, prefer_const_constructors, unnecessary_this
 
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'dart:io';
 import 'package:f1rst/models/user_model.dart';
 import 'package:f1rst/features/registration/state_managers/state.dart';
 import 'package:f1rst/features/home/home_page.dart';
@@ -9,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
   final FirebaseAuth auth = FirebaseAuth.instance;

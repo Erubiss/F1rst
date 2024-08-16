@@ -1,9 +1,10 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+// ignore_for_file: unnecessary_this, prefer_const_constructors, avoid_print, use_build_context_synchronously
+
 import 'package:f1rst/features/log_in/state_managers/state.dart';
 import 'package:f1rst/features/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final FirebaseAuth auth = FirebaseAuth.instance;

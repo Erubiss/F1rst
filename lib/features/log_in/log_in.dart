@@ -19,7 +19,7 @@ class _LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        final cubit = context.read<LoginCubit>(); // Access the provided cubit
+        final cubit = context.read<LoginCubit>();
         return GestureDetector(
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();

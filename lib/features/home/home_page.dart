@@ -1,12 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:f1rst/core/constants/app_colors.dart';
+import 'package:f1rst/features/home/components/delete_dialog.dart';
+import 'package:f1rst/features/home/components/update_info_sheet.dart';
 import 'package:f1rst/features/home/views/profile_view.dart';
 import 'package:f1rst/features/home/views/settings_view.dart';
 import 'package:f1rst/features/log_in/state_managers/cubit.dart';
-import 'package:f1rst/features/registration/state_managers/state.dart';
 import 'package:f1rst/features/home/state_managers/cubit.dart';
 import 'package:f1rst/features/home/state_managers/state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,60 +105,63 @@ class _HomePage extends State<HomePage> {
                                     ElevatedButton(
                                       onPressed: () => {cubit.pickImage()},
                                       child: Text('Pick Image'),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.blue.shade200),
                                     ),
                                   ],
                                 )
                               ],
                             ),
                             SizedBox(height: 8),
-                            Text(
-                              state.aboutUser,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white70,
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 10.0,
-                                    color: Colors.black,
-                                    offset: Offset(2.0, 2.0),
-                                  ),
-                                ],
+                            Row(children: [
+                              Text(
+                                state.aboutUser,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white54,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 10.0,
+                                      color: Colors.black54,
+                                      offset: Offset(2.0, 2.0),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 16),
-                            TextField(
-                              controller: ctrl,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Update Info',
-                                fillColor: Colors.white,
-                                filled: true,
+                              SizedBox(
+                                width: 15,
                               ),
-                            ),
-                            SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                cubit.updateUserAbout(ctrl.text);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                              ),
-                              child: Text("Update"),
-                            ),
-                            SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                cubit.deleteUser(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.appRed,
-                              ),
-                              child: Text(
-                                'Delete User ${loginCubit.state.isLoading}',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                              GestureDetector(
+                                onTap: () {
+                                  aboutUserBottomSheetbar(context, cubit, ctrl);
+                                },
+                                child: Icon(
+                                  CupertinoIcons.pen,
+                                  size: 30,
+                                ),
+                              )
+                            ]),
                             views[state.selectedIndex],
+                            Spacer(),
+                            Align(
+                              alignment: Alignment.center,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  showDeleteDialog(context, cubit);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.appRed,
+                                ),
+                                child: Text(
+                                  'Delete User',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            )
                           ],
                         ),
                       );
