@@ -5,9 +5,11 @@ import 'package:f1rst/features/home/components/delete_dialog.dart';
 import 'package:f1rst/features/home/components/update_info_sheet.dart';
 import 'package:f1rst/features/home/views/profile_view.dart';
 import 'package:f1rst/features/home/views/settings_view.dart';
+import 'package:f1rst/features/home/views/user_view.dart';
 import 'package:f1rst/features/log_in/state_managers/cubit.dart';
 import 'package:f1rst/features/home/state_managers/cubit.dart';
 import 'package:f1rst/features/home/state_managers/state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,14 +36,17 @@ class _HomePage extends State<HomePage> {
   List<Widget> tabs = [
     Icon(Icons.home_outlined),
     Icon(Icons.settings),
+    Icon(Icons.account_circle_rounded),
   ];
   List<Widget> views = [
     ProfileView(),
     SettingsView(),
+    UserView()
   ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,

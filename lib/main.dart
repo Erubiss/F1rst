@@ -15,13 +15,13 @@ void main() async {
   runApp(const MyApp());
 }
 
-final auth = FirebaseAuth.instance;
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+final auth = FirebaseAuth.instance;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
-        home: auth.currentUser == null ? SplashScreen() : HomePage(),
+        home: auth.currentUser?.phoneNumber == "" ? SplashScreen() : HomePage(),
         // home: SplashScreen(),
       ),
     );

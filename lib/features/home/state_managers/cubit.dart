@@ -116,6 +116,8 @@ class UserCubit extends Cubit<UserState> {
       });
     } catch (e) {
       print(e);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SplashScreen()));
     }
   }
 }
