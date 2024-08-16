@@ -29,7 +29,10 @@ class UserCubit extends Cubit<UserState> {
       final doc =
           await firestore.collection('users').doc(auth.currentUser!.uid).get();
       final data = doc.data()!;
-
+            final doc2 =
+          await firestore.collection('topics').doc('topics').get();
+      final data2 = doc2.data()!;
+      print(data2['image']);
       emit(state.copyWith(
         email: data['email'],
         phoneNumber: data['phoneNumber'],
@@ -116,8 +119,18 @@ class UserCubit extends Cubit<UserState> {
       });
     } catch (e) {
       print(e);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SplashScreen()));
     }
   }
+Future <void> logOut(BuildContext context) async{
+  try {
+  await auth.signOut().then((value)=>Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SplashScreen())));
+} catch (e) {
+  print(e);
+}
+
+
+
+}
+
 }

@@ -62,8 +62,7 @@ class _LogInState extends State<LogIn> {
                               hintText: 'Email',
                               icon: Icons.email,
                               withError: state.isEmailError,
-                              errorMessage:
-                                  cubit.getEmailErrorMessage(emailCtrl.text),
+                              errorMessage: state.emailMessage,
                             ),
                             const SizedBox(height: 16),
                             LogField(
@@ -72,8 +71,7 @@ class _LogInState extends State<LogIn> {
                               icon: Icons.lock,
                               obscureText: true,
                               withError: state.isPasswordError,
-                              errorMessage: cubit
-                                  .getPasswordErrorMessage(passwordCtrl.text),
+                              errorMessage: state.passwordMessage,
                             ),
                             const SizedBox(height: 24),
                             ElevatedButton(

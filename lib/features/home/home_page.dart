@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:f1rst/core/constants/app_colors.dart';
-import 'package:f1rst/features/home/components/delete_dialog.dart';
+import 'package:f1rst/core/ui_components/delete_dialog.dart';
 import 'package:f1rst/features/home/components/update_info_sheet.dart';
 import 'package:f1rst/features/home/views/profile_view.dart';
 import 'package:f1rst/features/home/views/settings_view.dart';
@@ -38,15 +38,10 @@ class _HomePage extends State<HomePage> {
     Icon(Icons.settings),
     Icon(Icons.account_circle_rounded),
   ];
-  List<Widget> views = [
-    ProfileView(),
-    SettingsView(),
-    UserView()
-  ];
+  List<Widget> views = [ProfileView(), SettingsView(), UserView()];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -104,6 +99,27 @@ class _HomePage extends State<HomePage> {
                                             : Image.network(
                                                 state.userImage,
                                                 fit: BoxFit.cover,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                       ),
                                     ),
@@ -149,20 +165,56 @@ class _HomePage extends State<HomePage> {
                             ]),
                             views[state.selectedIndex],
                             Spacer(),
-                            Align(
-                              alignment: Alignment.center,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  showDeleteDialog(context, cubit);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.appRed,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return CustomDialog(
+                                          onLogout: () {
+                                            cubit.deleteUser(context).then(
+                                                (context) => Navigator.pop);
+                                          },
+                                          dialogLabel: 'Delete user?',
+                                          dialogQuestion: 'Are you sure?',
+                                        );
+                                      },
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.appRed,
+                                  ),
+                                  child: Text(
+                                    'Delete User',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                                child: Text(
-                                  'Delete User',
-                                  style: TextStyle(color: Colors.white),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return CustomDialog(
+                                          onLogout: () {
+                                            cubit.logOut(context);
+                                          },
+                                          dialogLabel: 'Log out?',
+                                        );
+                                      },
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.appRed,
+                                  ),
+                                  child: Text(
+                                    'Log out',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                             SizedBox(
                               height: 50,

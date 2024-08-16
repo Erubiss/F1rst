@@ -37,7 +37,7 @@ final auth = FirebaseAuth.instance;
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
-        home: auth.currentUser?.phoneNumber == "" ? SplashScreen() : HomePage(),
+        home: auth.currentUser==null ? SplashScreen() : HomePage(),
         // home: SplashScreen(),
       ),
     );
