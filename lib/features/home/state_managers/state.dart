@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 class UserState {
   final String email;
   final String phoneNumber;
@@ -5,6 +7,7 @@ class UserState {
   final String userImage;
   final bool isLoading;
   final int selectedIndex;
+  final List<String> homeGrids;
 
   UserState({
     required this.email,
@@ -13,6 +16,7 @@ class UserState {
     required this.userImage,
     required this.isLoading,
     required this.selectedIndex,
+    required this.homeGrids,
   });
 
   UserState copyWith({
@@ -22,6 +26,7 @@ class UserState {
     String? userImage,
     bool? isLoading,
     int? selectedIndex,
+    List<String>? homeGrids,
   }) {
     return UserState(
       email: email ?? this.email,
@@ -30,6 +35,7 @@ class UserState {
       userImage: userImage ?? this.userImage,
       isLoading: isLoading ?? this.isLoading,
       selectedIndex: selectedIndex ?? this.selectedIndex,
+      homeGrids: homeGrids ?? this.homeGrids,
     );
   }
 
@@ -40,6 +46,7 @@ class UserState {
         userImage,
         isLoading,
         selectedIndex,
+        homeGrids,
       ];
 
   factory UserState.initial() {
@@ -47,9 +54,10 @@ class UserState {
       email: '',
       phoneNumber: '',
       aboutUser: '',
-      userImage: 'assets/images/default_photo.jpg',
+      userImage: '',
       isLoading: false,
       selectedIndex: 0,
+      homeGrids: [],
     );
   }
 }

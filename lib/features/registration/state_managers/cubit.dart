@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors, unnecessary_this
 
 import 'dart:io';
-import 'package:f1rst/models/user_model.dart';
+import 'package:f1rst/core/constants/models/user_model.dart';
 import 'package:f1rst/features/registration/state_managers/state.dart';
 import 'package:f1rst/features/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +23,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     required String userImagePath,
     required BuildContext context,
     String aboutUser = "",
+    String userImage = '',
   }) async {
     validateEmail(email);
     validatePhoneNumber(phoneNumber);
@@ -48,21 +49,13 @@ class RegistrationCubit extends Cubit<RegistrationState> {
 
       print('User created: ${auth.currentUser!.uid}');
 
-      // final imageUrl = await _uploadUserImage(userImagePath);
-      //nkar vercnelu logikan texapoxel urish function mej
-
-      //ete statum ka nkar petqa uxarkvi senc
-      // 'email': email,
-      //       'phoneNumber': phoneNumber,
-      //       'aboutUser': aboutUser,
-      // 'userImage': imageUrl,
-// ete chka state-um nkar aran image url zaprosy
+      final imageUrl = await _uploadUserImage(userImagePath);
 
       await firestore.collection('users').doc(auth.currentUser!.uid).set({
         'email': email,
         'phoneNumber': phoneNumber,
         'aboutUser': aboutUser,
-        // 'userImage': imageUrl,
+        'userImage': userImage == '' ? state.userImage : imageUrl,
       }).then((value) {
         Navigator.push(
           context,

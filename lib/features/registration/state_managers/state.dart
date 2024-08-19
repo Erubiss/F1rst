@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:equatable/equatable.dart';
-import 'package:f1rst/models/user_model.dart';
+import 'package:f1rst/core/constants/models/user_model.dart';
 
 class RegistrationState extends Equatable {
   final String email;
@@ -95,7 +95,7 @@ class RegistrationState extends Equatable {
       password: "",
       confirmPassword: "",
       aboutUser: "",
-      userImage: "assets/imagesdefphoto.jpg",
+      userImage: "assets/images/defphoto.jpeg",
       isLoading: false,
       isEmailError: false,
       isPhoneNumberError: false,

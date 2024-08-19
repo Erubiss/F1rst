@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:f1rst/features/registration/state_managers/cubit.dart';
 import 'package:f1rst/features/registration/state_managers/state.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegBuilder extends StatelessWidget {
   const RegBuilder({super.key});
@@ -58,6 +59,16 @@ class _RegistrationState extends State<Registration> {
   //     );
   //   }
   // }
+  Future<void> setimage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+        print('Image picked: ${_selectedImage?.path}');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,13 +140,18 @@ class _RegistrationState extends State<Registration> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            // onTap: uploadImage,
+                            onTap: setimage,
                             child: CircleAvatar(
-                              radius: 60,
-                              child: _selectedImage == null
-                                  ? const Icon(Icons.add_a_photo, size: 40)
-                                  : Image.file(_selectedImage!),
-                            ),
+                                radius: 70,
+                                child: _selectedImage == null
+                                    ? const Icon(Icons.add_a_photo)
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.file(
+                                          _selectedImage!,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      )),
                           ),
                           const SizedBox(height: 16),
                           RegField(

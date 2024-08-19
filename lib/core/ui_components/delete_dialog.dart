@@ -5,19 +5,21 @@ import 'package:flutter/material.dart';
 class CustomDialog extends StatelessWidget {
   final VoidCallback onLogout;
   final String dialogLabel;
-  final String? dialogQuestion;
+  final String dialogQuestion;
+  final String buttonText;
   const CustomDialog({
     super.key,
     required this.onLogout,
     required this.dialogLabel,
-    this.dialogQuestion,
+    required this.dialogQuestion,
+    required this.buttonText,
   });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(dialogLabel),
-      content: Text(dialogQuestion ?? 'joj'),
+      content: Text(dialogQuestion),
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -30,7 +32,7 @@ class CustomDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             foregroundColor: Colors.red,
           ),
-          child: Text('Delete'),
+          child: Text(buttonText),
         ),
       ],
     );

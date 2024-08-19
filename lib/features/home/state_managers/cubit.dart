@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'dart:ffi';
+
 import 'package:f1rst/features/home/state_managers/state.dart';
 import 'package:f1rst/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,9 @@ class UserCubit extends Cubit<UserState> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final ImagePicker picker = ImagePicker();
 
-  UserCubit() : super(UserState.initial());
+  UserCubit() : super(UserState.initial()) {
+    getUser();
+  }
 
   void changeTabIndex(int index) {
     emit(state.copyWith(selectedIndex: index));
@@ -29,10 +33,7 @@ class UserCubit extends Cubit<UserState> {
       final doc =
           await firestore.collection('users').doc(auth.currentUser!.uid).get();
       final data = doc.data()!;
-            final doc2 =
-          await firestore.collection('topics').doc('topics').get();
-      final data2 = doc2.data()!;
-      print(data2['image']);
+
       emit(state.copyWith(
         email: data['email'],
         phoneNumber: data['phoneNumber'],
@@ -121,16 +122,25 @@ class UserCubit extends Cubit<UserState> {
       print(e);
     }
   }
-Future <void> logOut(BuildContext context) async{
-  try {
-  await auth.signOut().then((value)=>Navigator.push(
+
+  Future<void> logOut(BuildContext context) async {
+    try {
+      await auth.signOut().then((value) => Navigator.push(
           context, MaterialPageRoute(builder: (context) => SplashScreen())));
-} catch (e) {
-  print(e);
-}
+    } catch (e) {
+      print(e);
+    }
+  }
 
+  Future<void> homeGrids() async {
+    try {
+      final docPic = await firestore.collection('topics').doc('topics').get();
+      final dataPic = List<String>.from(docPic.data()!['image']);
 
-
-}
-
+      emit(state.copyWith(homeGrids: dataPic));
+      print(dataPic);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
