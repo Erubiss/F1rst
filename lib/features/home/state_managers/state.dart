@@ -57,7 +57,10 @@ class UserState {
       userImage: '',
       isLoading: false,
       selectedIndex: 0,
-      homeGrids: [],
+      homeGrids: [
+        'a',
+      ],
     );
   }
+
 }

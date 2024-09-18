@@ -33,6 +33,8 @@ class LoginCubit extends Cubit<LoginState> {
         emit(state.copyWith(emailMessage: 'This email is already registered.'));
       } else if (e.code == 'weak-password') {
         emit(state.copyWith(passwordMessage: 'The password is too weak.'));
+      } else if (e.code == "invalid-credential") {
+        emit(state.copyWith(passwordMessage: 'The password is incorrect.'));
       }
     } finally {
       emit(state.copyWith(isLoading: false));

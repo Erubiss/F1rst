@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:f1rst/features/registration/state_managers/cubit.dart';
 import 'package:f1rst/features/registration/state_managers/state.dart';
-import 'package:image_picker/image_picker.dart';
 
 class RegBuilder extends StatelessWidget {
   const RegBuilder({super.key});
@@ -33,7 +32,6 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController pswCtrl = TextEditingController();
   final TextEditingController cnfPswCtrl = TextEditingController();
   final TextEditingController aboutCtrl = TextEditingController();
-  File? _selectedImage;
 
   // Future<void> uploadImage() async {
   //   final status = await Permission.storage.request();
@@ -59,16 +57,6 @@ class _RegistrationState extends State<Registration> {
   //     );
   //   }
   // }
-  Future<void> setimage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-        print('Image picked: ${_selectedImage?.path}');
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,18 +128,24 @@ class _RegistrationState extends State<Registration> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            onTap: setimage,
-                            child: CircleAvatar(
-                                radius: 70,
-                                child: _selectedImage == null
-                                    ? const Icon(Icons.add_a_photo)
+                            onTap: cubit.setimage,
+                            child:
+                                state.userImage == "assets/images/defphoto.jpeg"
+                                    ? const Icon(
+                                        Icons.add_a_photo,
+                                        size: 60,
+                                      )
                                     : ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
-                                        child: Image.file(
-                                          _selectedImage!,
-                                          fit: BoxFit.contain,
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: Image.file(
+                                            File(state.userImage),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      )),
+                                      ),
                           ),
                           const SizedBox(height: 16),
                           RegField(
@@ -209,14 +203,13 @@ class _RegistrationState extends State<Registration> {
                               ),
                               overlayColor: Colors.blue,
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               cubit.onSubmitted(
                                 email: emailCtrl.text,
                                 phoneNumber: phoneCtrl.text,
                                 password: pswCtrl.text,
                                 confirmPassword: cnfPswCtrl.text,
                                 aboutUser: aboutCtrl.text,
-                                userImagePath: _selectedImage?.path ?? '',
                                 context: context,
                               );
                             },

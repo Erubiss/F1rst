@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
-import 'dart:ffi';
-
 import 'package:f1rst/features/home/state_managers/state.dart';
 import 'package:f1rst/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -134,13 +132,47 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> homeGrids() async {
     try {
+      //true
       final docPic = await firestore.collection('topics').doc('topics').get();
+
       final dataPic = List<String>.from(docPic.data()!['image']);
 
-      emit(state.copyWith(homeGrids: dataPic));
+      dataPic.insert(0, 'aaa');
+
+      emit(state.copyWith(
+        homeGrids: dataPic,
+      ));
       print(dataPic);
     } catch (e) {
       print(e.toString());
     }
   }
+
+  Future<void> addPhotoGrid() async {
+  try {
+    final XFile? addPhoto = await picker.pickImage(source: ImageSource.gallery);
+    
+    if (addPhoto == null) {
+      print('no image');
+      return;
+    }
+
+    final String? imagePath = await uploadImage(addPhoto.path);
+    
+    if (imagePath == null) {
+      return;
+    }
+
+    await firestore.collection('topics').doc('topics').update({
+      'image': FieldValue.arrayUnion([imagePath])
+    });
+
+    final List<String> updatedGrids = List<String>.from(state.homeGrids);
+    updatedGrids.add(imagePath);
+    emit(state.copyWith(homeGrids: updatedGrids));
+
+  } catch (e) {
+    print(e);
+  }
+}
 }

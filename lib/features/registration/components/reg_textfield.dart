@@ -48,26 +48,32 @@ class _RegFieldState extends State<RegField> {
             prefixIcon: Icon(widget.icon),
             filled: true,
             fillColor: Colors.grey[200],
-            enabledBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
               borderSide: BorderSide(
-                color: widget.withError ? Colors.red : Colors.transparent,
+                color: Colors.transparent,
                 width: 2.0,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(Radius.circular(30.0)),
               borderSide: BorderSide(
-                color: widget.withError ? Colors.red : Colors.blue,
+                color: Colors.blue,
                 width: 2.0,
               ),
             ),
           ),
         ),
         if (widget.withError)
-          Text(
-            widget.errorMessage,
-            style: const TextStyle(color: Colors.red),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 9.0),
+              child: Text(
+                widget.errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
           ),
       ],
     );

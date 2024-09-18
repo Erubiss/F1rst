@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -20,10 +21,8 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     required String phoneNumber,
     required String password,
     required String confirmPassword,
-    required String userImagePath,
     required BuildContext context,
     String aboutUser = "",
-    String userImage = '',
   }) async {
     validateEmail(email);
     validatePhoneNumber(phoneNumber);
@@ -38,7 +37,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     try {
       emit(state.copyWith(isLoading: true));
 
-      final credential = await auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -49,13 +48,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
 
       print('User created: ${auth.currentUser!.uid}');
 
-      final imageUrl = await _uploadUserImage(userImagePath);
-
       await firestore.collection('users').doc(auth.currentUser!.uid).set({
         'email': email,
         'phoneNumber': phoneNumber,
         'aboutUser': aboutUser,
-        'userImage': userImage == '' ? state.userImage : imageUrl,
+        // 'userImage': userImage == '' ? state.userImage : imageUrl,
       }).then((value) {
         Navigator.push(
           context,
@@ -76,6 +73,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       emit(state.copyWith(emailMessage: 'An unexpected error occurred.'));
       print('Unexpected error: $e');
     } finally {
+      if (state.userImage != 'assets/images/defphoto.jpeg') {
+        updateUserImage(state.userImage);
+      }
+      //TODO
+      //nenc anel vor aranc nkari registr exneluc chtraqi
       emit(state.copyWith(isLoading: false));
     }
   }
@@ -102,14 +104,62 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     }
   }
 
-  Future<String> _uploadUserImage(String filePath) async {
-    final storageRef = FirebaseStorage.instance
-        .ref()
-        .child('user_images/${DateTime.now().toIso8601String()}');
-    final uploadTask = storageRef.putFile(File(filePath));
+  Future<void> setimage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      emit(state.copyWith(userImage: pickedFile.path));
+    }
+  }
 
-    final snapshot = await uploadTask.whenComplete(() => {});
-    return await snapshot.ref.getDownloadURL();
+  // Future<String> uploadUserImage(String filePath) async {
+  //   final storageRef = FirebaseStorage.instance
+  //       .ref()
+  //       .child('user_images/${DateTime.now().toIso8601String()}');
+  //   final uploadTask = storageRef.putFile(File(filePath));
+
+  //   final snapshot = await uploadTask.whenComplete(() => {});
+  //   return await snapshot.ref.getDownloadURL();
+  // }
+
+  Future<void> updateUserImage(String imagePath) async {
+    try {
+      final userImage = await uploadImage(imagePath);
+      await firestore.collection('users').doc(auth.currentUser!.uid).update({
+        'userImage': userImage,
+      });
+      emit(state.copyWith(userImage: userImage));
+    } catch (e) {
+      print("Error in updateUserImage: $e");
+    }
+  }
+
+  Future<String?> uploadImage(String imagePath) async {
+    try {
+      if (imagePath.isEmpty) {
+        throw Exception("Image path is empty.");
+      }
+
+      final file = File(imagePath);
+      if (!await file.exists()) {
+        throw Exception("File does not exist at path: $imagePath");
+      }
+
+      final fileName = imagePath.split('/').last;
+      final storageRef = FirebaseStorage.instance.ref('images/$fileName');
+
+      final uploadTask = storageRef.putFile(file);
+      final snapshot = await uploadTask;
+
+      if (snapshot.state == TaskState.success) {
+        return await snapshot.ref.getDownloadURL();
+      } else {
+        throw Exception("Failed to upload image.");
+      }
+    } catch (e) {
+      print("Error uploading image: $e");
+      return null;
+    }
   }
 
   void validateEmail(String email) {
